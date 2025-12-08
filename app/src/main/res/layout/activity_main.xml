@@ -39,7 +39,7 @@
                 android:textColor="@color/text"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold"
-                app:drawableLeftCompat="@drawable/ic_search" />
+                app:drawableLeftCompat="@drawable/ic_search_24" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -58,7 +58,7 @@
                 android:textColor="@color/text"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold"
-                app:drawableLeftCompat="@drawable/ic_medialibrary" />
+                app:drawableLeftCompat="@drawable/ic_medialibrary_24" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -76,7 +76,7 @@
                 android:textColor="@color/text"
                 android:textSize="@dimen/text_size"
                 android:textStyle="bold"
-                app:drawableLeftCompat="@drawable/ic_settings" />
+                app:drawableLeftCompat="@drawable/ic_settings_24" />
         </androidx.cardview.widget.CardView>
 
 

@@ -17,7 +17,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="12dp"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back_arrow_24" />
         <TextView
             android:id="@+id/bSearch"
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         android:text="@string/item_dark_theme"
         android:textColor="@color/text"
         android:textSize="@dimen/item_text_size"
-        app:drawableRightCompat="@drawable/ic_control" />
+        app:drawableRightCompat="@drawable/ic_control_39_25" />
 
     <TextView
         android:id="@+id/bShareapp"
@@ -52,7 +52,7 @@
         android:text="@string/item_share_app"
         android:textColor="@color/text"
         android:textSize="@dimen/item_text_size"
-        app:drawableRightCompat="@drawable/ic_share" />
+        app:drawableRightCompat="@drawable/ic_share_24" />
 
     <TextView
         android:id="@+id/bWritesupport"
@@ -64,7 +64,7 @@
         android:text="@string/item_write_support"
         android:textColor="@color/text"
         android:textSize="@dimen/item_text_size"
-        app:drawableRightCompat="@drawable/ic_support" />
+        app:drawableRightCompat="@drawable/ic_support_24" />
 
     <TextView
         android:id="@+id/bUseragreement"
@@ -76,6 +76,6 @@
         android:text="@string/item_agreement"
         android:textColor="@color/text"
         android:textSize="@dimen/item_text_size"
-        app:drawableRightCompat="@drawable/ic_agreement" />
+        app:drawableRightCompat="@drawable/ic_agreement_24" />
 
 </LinearLayout>
