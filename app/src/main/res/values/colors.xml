@@ -4,5 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#3772E7</color>
     <color name="text">#1A1B22</color>
-
+    <color name="textConstant">#1A1B22</color>
+    <color name="cardview">#FFFFFF</color>
+    <color name="whiteBackground">#FFFFFFFF</color>
+    <color name="icon">#AEAFB4</color>
+    <color name="switcher">#00D6C3</color>
+    <color name="arrow">#1A1B22</color>
+    <color name="searchCardView">#E6E8EB</color>
+    <color name="textSearch">#818C99</color>
 </resources>

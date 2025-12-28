@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CardTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textColor">@color/textConstant</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="SettingTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingHorizontal">@dimen/item_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/item_padding_vertical</item>
+        <item name="android:drawablePadding">@dimen/icon_padding</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/item_text_size</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:drawableTint">@color/icon</item>
+    </style>
+
+    <style name="CardStyle" parent="CardView">
+        <item name="cardBackgroundColor">#FFFFFF</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+</resources>

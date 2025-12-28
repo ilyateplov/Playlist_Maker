@@ -16,7 +16,7 @@
         android:layout_marginVertical="16dp"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size"
-        android:textStyle="bold"/>
+        android:fontFamily="@font/ys_display_medium" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,16 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/card_radius">
+            app:cardCornerRadius="@dimen/card_radius"
+            style="@style/CardStyle">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/icon_padding"
                 android:text="@string/button_search"
-                android:textColor="@color/text"
-                android:textSize="@dimen/text_size"
-                android:textStyle="bold"
+                style="@style/CardTextViewStyle"
                 app:drawableLeftCompat="@drawable/ic_search_24" />
         </androidx.cardview.widget.CardView>
 
@@ -48,16 +43,11 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginVertical="16dp"
-            app:cardCornerRadius="@dimen/card_radius">
+            app:cardCornerRadius="@dimen/card_radius"
+            style="@style/CardStyle">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/icon_padding"
                 android:text="@string/button_medialibrary"
-                android:textColor="@color/text"
-                android:textSize="@dimen/text_size"
-                android:textStyle="bold"
+                style="@style/CardTextViewStyle"
                 app:drawableLeftCompat="@drawable/ic_medialibrary_24" />
         </androidx.cardview.widget.CardView>
 
@@ -66,16 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/card_radius">
+            style="@style/CardStyle"
+            app:cardCornerRadius="@dimen/card_radius"
+            >
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/icon_padding"
                 android:text="@string/button_setting"
-                android:textColor="@color/text"
-                android:textSize="@dimen/text_size"
-                android:textStyle="bold"
+                style="@style/CardTextViewStyle"
                 app:drawableLeftCompat="@drawable/ic_settings_24" />
         </androidx.cardview.widget.CardView>
 
