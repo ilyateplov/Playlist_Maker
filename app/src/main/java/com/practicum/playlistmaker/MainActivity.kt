@@ -3,6 +3,7 @@ package com.practicum.playlistmaker
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(v.paddingLeft, systemBars.top, v.paddingRight, systemBars.bottom)
             insets
         }
-        val bSearch = findViewById<CardView>(R.id.bSearch)
+        val bSearch = findViewById<Button>(R.id.bSearch)
 
         val searchClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -29,14 +30,14 @@ class MainActivity : AppCompatActivity() {
         }
         bSearch.setOnClickListener(searchClickListener)
 
-        val bMedialibrary = findViewById<CardView>(R.id.bMedialibrary)
+        val bMedialibrary = findViewById<Button>(R.id.bMedialibrary)
 
         bMedialibrary.setOnClickListener {
             val displayIntent = Intent(this@MainActivity, SearchActivity::class.java)
             startActivity(displayIntent)
         }
 
-        val bSettings = findViewById<CardView>(R.id.bSettings)
+        val bSettings = findViewById<Button>(R.id.bSettings)
 
         bSettings.setOnClickListener {
             val displayIntent = Intent(this@MainActivity, SettingsActivity::class.java)
