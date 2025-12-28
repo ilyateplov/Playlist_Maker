@@ -25,4 +25,10 @@
         <item name="android:drawableTint">@color/icon</item>
     </style>
 
+    <style name="ToolBarTextStyle">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
 </resources>

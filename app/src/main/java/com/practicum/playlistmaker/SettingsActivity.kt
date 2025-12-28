@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.appbar.MaterialToolbar
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +21,9 @@ class SettingsActivity : AppCompatActivity() {
             v.setPadding(v.paddingLeft, systemBars.top, v.paddingRight, systemBars.bottom)
             insets
         }
-        val bBack = findViewById<ImageView>(R.id.bBack)
+        val toolBar = findViewById<MaterialToolbar>(R.id.toolBar)
 
-        bBack.setOnClickListener {
+        toolBar.setNavigationOnClickListener {
             finish()
         }
 

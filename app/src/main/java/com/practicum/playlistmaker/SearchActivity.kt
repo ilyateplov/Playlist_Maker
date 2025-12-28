@@ -14,6 +14,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import com.google.android.material.appbar.MaterialToolbar
 
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
@@ -27,9 +29,9 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
-        val bBack = findViewById<ImageView>(R.id.bBack)
+        val toolBar = findViewById<MaterialToolbar>(R.id.toolBar)
 
-        bBack.setOnClickListener {
+        toolBar.setNavigationOnClickListener {
             finish()
         }
 
@@ -52,7 +54,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                clearButton.isVisible = !s.isNullOrEmpty()
                 request = s?.toString()
             }
 
@@ -61,14 +63,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
-    }
-
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
