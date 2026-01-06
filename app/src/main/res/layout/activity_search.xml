@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/whiteBackground">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/title_search"
+        app:titleTextAppearance="@style/ToolBarTextStyle"
+        app:contentInsetStartWithNavigation="0dp"
+        app:titleMarginStart="4dp"
+        app:navigationIcon="@drawable/ic_back_arrow_24"
+        app:navigationIconTint="@color/arrow"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:background="@drawable/background_search"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp">
+        <EditText
+            android:id="@+id/inputEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/title_search"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/textSearch"
+            android:fontFamily="@font/ys_display_regular"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_search_16"
+            android:drawableTint="@color/textSearch"
+            android:drawablePadding="8dp"
+            android:background="@null"/>
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_close_16"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
