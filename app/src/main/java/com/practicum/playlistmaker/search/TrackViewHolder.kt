@@ -1,0 +1,36 @@
+package com.practicum.playlistmaker.search
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker.R
+
+class TrackViewHolder(
+    val parent:ViewGroup,
+    parentView : View = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
+) : RecyclerView.ViewHolder(parentView) {
+
+    private val cover: ImageView = parentView.findViewById(R.id.cover)
+    private val title: TextView = parentView.findViewById(R.id.title)
+    private val subtitle: TextView = parentView.findViewById(R.id.subtitle)
+    private val time: TextView = parentView.findViewById(R.id.time)
+
+    fun bind(model: Track) {
+        title.text = model.trackName
+        subtitle.text = model.artistName
+        time.text = model.trackTime
+
+        Glide.with(itemView)
+            .load(model.artworkUrl100)
+            .transform(RoundedCorners(2))
+            .placeholder(R.drawable.ic_placeholder_45)
+            .fitCenter()
+            .into(cover)
+    }
+}
+
