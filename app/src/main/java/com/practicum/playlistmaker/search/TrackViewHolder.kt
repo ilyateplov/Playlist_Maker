@@ -23,7 +23,7 @@ class TrackViewHolder(
     fun bind(model: Track) {
         title.text = model.trackName
         subtitle.text = model.artistName
-        time.text = model.trackTime
+        time.text = model.trackTimeMillis
 
         Glide.with(itemView)
             .load(model.artworkUrl100)
