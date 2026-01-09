@@ -10,4 +10,6 @@
     <color name="arrow">#FFFFFFFF</color>
     <color name="searchCardView">#FFFFFF</color>
     <color name="textSearch">#FF000000</color>
+    <color name="trackSubtitle">#FFFFFF</color>
+    <color name="trackTitle">#FFFFFF</color>
 </resources>

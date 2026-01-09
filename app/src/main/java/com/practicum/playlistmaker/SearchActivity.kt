@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Adapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,7 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
+import com.practicum.playlistmaker.search.TrackAdapter
+import com.practicum.playlistmaker.search.tracks
 
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
@@ -38,7 +43,10 @@ class SearchActivity : AppCompatActivity() {
         val linearLayout = findViewById<LinearLayout>(R.id.container)
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        val recyclerView = findViewById<RecyclerView>(R.id.trackList)
 
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = TrackAdapter(tracks)
 
         clearButton.setOnClickListener {
             inputEditText.setText("")

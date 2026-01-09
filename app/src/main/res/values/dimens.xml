@@ -6,4 +6,5 @@
     <dimen name="item_text_size">16sp</dimen>
     <dimen name="item_padding_horizontal">16dp</dimen>
     <dimen name="item_padding_vertical">21dp</dimen>
+    <dimen name="name_track_size">11sp</dimen>
 </resources>

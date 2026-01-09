@@ -12,4 +12,6 @@
     <color name="arrow">#1A1B22</color>
     <color name="searchCardView">#E6E8EB</color>
     <color name="textSearch">#818C99</color>
+    <color name="trackSubtitle">#AEAFB4</color>
+    <color name="trackTitle">#000000</color>
 </resources>
