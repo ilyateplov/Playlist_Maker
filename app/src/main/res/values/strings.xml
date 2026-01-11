@@ -18,4 +18,8 @@
     <string name="subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="link_offer">https://yandex.ru/legal/practicum_offer/ru/</string>
     <string name="email">teplovilha@ya.ru</string>
+
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="communication_problem">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="update">Обновить</string>
 </resources>

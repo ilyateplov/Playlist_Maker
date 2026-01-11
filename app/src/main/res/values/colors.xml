@@ -14,4 +14,7 @@
     <color name="textSearch">#818C99</color>
     <color name="trackSubtitle">#AEAFB4</color>
     <color name="trackTitle">#000000</color>
+    <color name="textProblem">#1A1B22</color>
+    <color name="textUpdate">#FFFFFF</color>
+    <color name="backgroundUpdate">#1A1B22</color>
 </resources>

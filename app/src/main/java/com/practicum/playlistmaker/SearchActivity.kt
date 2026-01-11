@@ -20,15 +20,17 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.practicum.playlistmaker.search.ITunesSearchApi
 import com.practicum.playlistmaker.search.SearchResponse
+import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.search.TrackAdapter
-import com.practicum.playlistmaker.search.tracks
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Query
 
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
@@ -41,6 +43,10 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val iTunesSearchService = retrofit.create(ITunesSearchApi::class.java)
+
+    private val trackAdapter = TrackAdapter(mutableListOf())
+
+    private var currentState: SearchState = SearchState.LIST
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +68,9 @@ class SearchActivity : AppCompatActivity() {
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val recyclerView = findViewById<RecyclerView>(R.id.trackList)
+        val update = findViewById<MaterialButton>(R.id.update)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val trackAdapter = TrackAdapter(tracks)
         recyclerView.adapter = trackAdapter
 
         clearButton.setOnClickListener {
@@ -73,6 +79,13 @@ class SearchActivity : AppCompatActivity() {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
+            trackAdapter.tracks.clear()
+            trackAdapter.notifyDataSetChanged()
+            switchState(SearchState.LIST)
+        }
+
+        update.setOnClickListener {
+            resultSearch(inputEditText.text.toString())
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -93,38 +106,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (inputEditText.text.isNotEmpty()) {
-                    iTunesSearchService.search(inputEditText.text.toString())
-                        .enqueue(object : Callback<SearchResponse> {
-                            override fun onResponse(
-                                call: Call<SearchResponse>,
-                                response: Response<SearchResponse>
-                            ) {
-                                if (response.code() == 200) {
-                                    trackAdapter.tracks.clear()
-                                    if (response.body()?.results?.isNotEmpty() == true) {
-                                        trackAdapter.tracks.addAll(response.body()?.results!!)
-                                        trackAdapter.notifyDataSetChanged()
-                                    }
-                                    if (trackAdapter.tracks.isEmpty()) {
-                                        //showMessage(getString(R.string.nothing_found), "")
-                                    } else {
-                                        //showMessage("", "")
-                                    }
-                                } else {
-                                    //showMessage(getString(R.string.something_went_wrong), response.code().toString())
-                                }
-                            }
-
-                            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                                //showMessage(
-                                    //getString(R.string.something_went_wrong),
-                                    //t.message.toString()
-                                //)
-                            }
-
-                        })
-                }
+                resultSearch(inputEditText.text.toString())
                 true
             }
             false
@@ -133,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_REQUEST, request)
-
+        outState.putSerializable(CURRENT_STATE, currentState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -141,10 +123,54 @@ class SearchActivity : AppCompatActivity() {
         request = savedInstanceState.getString(SEARCH_REQUEST)
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         inputEditText.setText(request)
+        currentState = savedInstanceState.getSerializable(CURRENT_STATE, SearchState::class.java) ?: SearchState.LIST
+        switchState(currentState)
     }
 
+    fun switchState(state: SearchState) {
+        val nothingFound = findViewById<LinearLayout>(R.id.nothingFound)
+        val communicationProblem = findViewById<LinearLayout>(R.id.communicationProblem)
+        val trackList = findViewById<RecyclerView>(R.id.trackList)
+        trackList.isVisible = state == SearchState.LIST
+        nothingFound.isVisible = state == SearchState.EMPTY
+        communicationProblem.isVisible = state == SearchState.ERROR
+        currentState = state
+    }
+
+    fun resultSearch(query: String) {
+        if (query.isNotEmpty()) {
+            iTunesSearchService.search(query)
+                .enqueue(object : Callback<SearchResponse> {
+                    override fun onResponse(
+                        call: Call<SearchResponse>,
+                        response: Response<SearchResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            trackAdapter.tracks.clear()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                trackAdapter.tracks.addAll(response.body()?.results!!)
+                                trackAdapter.notifyDataSetChanged()
+                            }
+                            if (trackAdapter.tracks.isEmpty()) {
+                                switchState(SearchState.EMPTY)
+                            } else {
+                                switchState(SearchState.LIST)
+                            }
+                        } else {
+                            switchState(SearchState.ERROR)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                        switchState(SearchState.ERROR)
+                    }
+
+                })
+        }
+    }
     companion object {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
+        const val CURRENT_STATE = "CURRENT_STATE"
     }
 }
 

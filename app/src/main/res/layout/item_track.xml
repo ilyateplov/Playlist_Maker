@@ -57,7 +57,8 @@
                 android:fontFamily="@font/ys_display_regular"
                 android:textSize="@dimen/name_track_size"
                 android:textColor="@color/trackSubtitle"
-                tools:text="5.41" />
+                tools:text="5.41"/>
+
         </LinearLayout>
     </LinearLayout>
 
