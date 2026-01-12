@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.R
 
 
 class TrackAdapter(
-    private val tracks: List<Track>
+    var tracks: MutableList<Track>
 ) : RecyclerView.Adapter<TrackViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {

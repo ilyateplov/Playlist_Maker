@@ -12,4 +12,7 @@
     <color name="textSearch">#FF000000</color>
     <color name="trackSubtitle">#FFFFFF</color>
     <color name="trackTitle">#FFFFFF</color>
+    <color name="textProblem">#FFFFFF</color>
+    <color name="textUpdate">#1A1B22</color>
+    <color name="backgroundUpdate">#FFFFFF</color>
 </resources>
