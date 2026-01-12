@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.practicum.playlistmaker.network.iTunesSearchService
 import com.practicum.playlistmaker.search.ITunesSearchApi
 import com.practicum.playlistmaker.search.SearchResponse
 import com.practicum.playlistmaker.search.SearchState
@@ -35,14 +36,9 @@ import retrofit2.http.Query
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
 
-    private val iTunesSearchBaseUrl = "https://itunes.apple.com"
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(iTunesSearchBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    private val iTunesSearchService = retrofit.create(ITunesSearchApi::class.java)
+
 
     private val trackAdapter = TrackAdapter(mutableListOf())
 
