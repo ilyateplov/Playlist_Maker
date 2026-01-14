@@ -37,4 +37,13 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/backgroundUpdate</item>
+        <item name="cornerRadius">54dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textUpdate</item>
+    </style>
+
 </resources>

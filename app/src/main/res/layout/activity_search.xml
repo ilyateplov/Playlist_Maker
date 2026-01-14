@@ -93,7 +93,7 @@
             android:orientation="vertical"
             android:layout_marginTop="102dp"
             android:visibility="invisible"
-            tools:visibility="visible">
+            tools:visibility="invisible">
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -115,14 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:backgroundTint="@color/backgroundUpdate"
-                app:cornerRadius="54dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/update"
-                android:textAllCaps="false"
-                android:fontFamily="@font/ys_display_medium"
-                android:textSize="14sp"
-                android:textColor="@color/textUpdate"/>
+                style="@style/ButtonStyle" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -131,8 +126,46 @@
             android:layout_height="match_parent"
             android:visibility="visible"
             tools:listitem="@layout/item_track"
-            tools:visibility="invisible"
-            />
+            tools:visibility="invisible"/>
+
+        <LinearLayout
+            android:id="@+id/searchHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/you_searched"
+                style="@style/textNothingAndProblem"
+                android:textColor="@color/textProblem"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="18dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/historyList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                tools:listitem="@layout/item_track"
+                tools:visibility="visible"
+                tools:itemCount="3"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clear_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:text="@string/clear_history"
+                style="@style/ButtonStyle"/>
+
+        </LinearLayout>
 
     </FrameLayout>
 

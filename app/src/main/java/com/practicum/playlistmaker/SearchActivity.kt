@@ -16,15 +16,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import com.practicum.playlistmaker.network.iTunesSearchService
 import com.practicum.playlistmaker.search.ITunesSearchApi
 import com.practicum.playlistmaker.search.SearchResponse
 import com.practicum.playlistmaker.search.SearchState
+import com.practicum.playlistmaker.search.Track
 import com.practicum.playlistmaker.search.TrackAdapter
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,12 +41,24 @@ class SearchActivity : AppCompatActivity() {
     var request: String? = null
 
 
+    private val onTrackClick: (Track) -> Unit = {track: Track ->
+        if (historyTrackAdapter.tracks.contains(track)) {
+            historyTrackAdapter.tracks.remove(track)
+        }
+        historyTrackAdapter.tracks.add(0,track)
+        if (historyTrackAdapter.tracks.size > 10) {
+            historyTrackAdapter.tracks.removeAt(10)
+        }
+        saveHistory(historyTrackAdapter.tracks)
+        historyTrackAdapter.notifyDataSetChanged()
+    }
 
 
+    private val trackAdapter = TrackAdapter(mutableListOf(), onTrackClick)
 
-    private val trackAdapter = TrackAdapter(mutableListOf())
+    private val historyTrackAdapter = TrackAdapter(mutableListOf(), onTrackClick)
 
-    private var currentState: SearchState = SearchState.LIST
+    private var currentState: SearchState = SearchState.HISTORY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +69,8 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(v.paddingLeft, systemBars.top, v.paddingRight, systemBars.bottom)
             insets
         }
+
+        restoreHistory()
 
         val toolBar = findViewById<MaterialToolbar>(R.id.toolBar)
 
@@ -65,9 +83,14 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val recyclerView = findViewById<RecyclerView>(R.id.trackList)
         val update = findViewById<MaterialButton>(R.id.update)
+        val historyRecyclerView = findViewById<RecyclerView>(R.id.historyList)
+        val clearHistory = findViewById<MaterialButton>(R.id.clear_history)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = trackAdapter
+
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyRecyclerView.adapter = historyTrackAdapter
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -77,6 +100,13 @@ class SearchActivity : AppCompatActivity() {
             }
             trackAdapter.tracks.clear()
             trackAdapter.notifyDataSetChanged()
+            switchState(SearchState.HISTORY)
+        }
+
+        clearHistory.setOnClickListener {
+            historyTrackAdapter.tracks.clear()
+            historyTrackAdapter.notifyDataSetChanged()
+            saveHistory(emptyList())
             switchState(SearchState.LIST)
         }
 
@@ -107,6 +137,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        switchState(SearchState.HISTORY)
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -119,7 +150,7 @@ class SearchActivity : AppCompatActivity() {
         request = savedInstanceState.getString(SEARCH_REQUEST)
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         inputEditText.setText(request)
-        currentState = savedInstanceState.getSerializable(CURRENT_STATE, SearchState::class.java) ?: SearchState.LIST
+        currentState = savedInstanceState.getSerializable(CURRENT_STATE, SearchState::class.java) ?: SearchState.HISTORY
         switchState(currentState)
     }
 
@@ -127,9 +158,11 @@ class SearchActivity : AppCompatActivity() {
         val nothingFound = findViewById<LinearLayout>(R.id.nothingFound)
         val communicationProblem = findViewById<LinearLayout>(R.id.communicationProblem)
         val trackList = findViewById<RecyclerView>(R.id.trackList)
+        val historyList = findViewById<LinearLayout>(R.id.searchHistory)
         trackList.isVisible = state == SearchState.LIST
         nothingFound.isVisible = state == SearchState.EMPTY
         communicationProblem.isVisible = state == SearchState.ERROR
+        historyList.isVisible = state == SearchState.HISTORY && historyTrackAdapter.tracks.isNotEmpty()
         currentState = state
     }
 
@@ -164,9 +197,27 @@ class SearchActivity : AppCompatActivity() {
                 })
         }
     }
+
+    fun saveHistory(tracks: List<Track>) {
+        val sharedPreferences = getSharedPreferences(PRACTICUM_HOMEWORK, MODE_PRIVATE)
+        sharedPreferences.edit()
+            .putString(TRACK_HISTORY_KEY, Gson().toJson(tracks))
+            .apply()
+    }
+
+    fun restoreHistory() {
+        val sharedPreferences = getSharedPreferences(PRACTICUM_HOMEWORK, MODE_PRIVATE)
+        val json = sharedPreferences.getString(TRACK_HISTORY_KEY, "[]")
+        val tracks = Gson().fromJson(json, Array<Track>::class.java).asList()
+        historyTrackAdapter.tracks.addAll(tracks)
+        historyTrackAdapter.notifyDataSetChanged()
+    }
     companion object {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
         const val CURRENT_STATE = "CURRENT_STATE"
+
+        const val PRACTICUM_HOMEWORK = "practicum_homework"
+        const val TRACK_HISTORY_KEY = "key_for_track_history"
     }
 }
 
