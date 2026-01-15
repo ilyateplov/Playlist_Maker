@@ -52,6 +52,7 @@
             android:layout_height="16dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_close_16"
+            app:tint="@color/searchClearIcon"
             android:visibility="gone" />
     </LinearLayout>
 
@@ -150,18 +151,19 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/historyList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="0dp"
                 android:visibility="visible"
                 tools:listitem="@layout/item_track"
                 tools:visibility="visible"
-                tools:itemCount="3"/>
+                tools:itemCount="10"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clear_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="24dp"
+                android:layout_marginVertical="24dp"
                 android:text="@string/clear_history"
                 style="@style/ButtonStyle"/>
 

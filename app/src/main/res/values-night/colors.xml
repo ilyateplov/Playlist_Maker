@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#1A1B22</color>
     <color name="text">#FFFFFFFF</color>
-    <color name="whiteBackground">#FF000000</color>
+    <color name="whiteBackground">#1A1B22</color>
     <color name="icon">#FFFFFFFF</color>
     <color name="switcher">#3772E7</color>
     <color name="arrow">#FFFFFFFF</color>
@@ -15,4 +15,5 @@
     <color name="textProblem">#FFFFFF</color>
     <color name="textUpdate">#1A1B22</color>
     <color name="backgroundUpdate">#FFFFFF</color>
+    <color name="searchClearIcon">#1A1B22</color>
 </resources>

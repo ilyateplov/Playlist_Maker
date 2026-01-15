@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.search
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,6 @@ class TrackViewHolder(
     fun bind(model: Track, onTrackClick: (Track) -> Unit) {
         title.text = model.trackName
         subtitle.text = model.artistName
-        //time.text = model.trackTimeMillis
         time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis.toLong())
 
         container.setOnClickListener {
@@ -37,10 +37,11 @@ class TrackViewHolder(
 
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(convertDpToPixels(parent.context, 2f).toInt()))
             .placeholder(R.drawable.ic_placeholder_45)
             .fitCenter()
             .into(cover)
     }
 }
 
+fun convertDpToPixels(context: Context, dp: Float) = dp * context.resources.displayMetrics.density

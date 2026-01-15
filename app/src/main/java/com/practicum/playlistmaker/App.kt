@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.search.Track
 class App : Application() {
 
     var darkTheme = false
+        private set
 
     override fun onCreate() {
         super.onCreate()
@@ -41,8 +42,8 @@ class App : Application() {
     }
 
     companion object {
-        const val APPLICATION_SETTINGS = "application_settings"
-        const val DARK_THEME_KEY = "dark_theme_key"
+        private const val APPLICATION_SETTINGS = "application_settings"
+        private const val DARK_THEME_KEY = "dark_theme_key"
     }
 }
 

@@ -60,6 +60,8 @@ class SearchActivity : AppCompatActivity() {
 
     private var currentState: SearchState = SearchState.HISTORY
 
+    private val gson: Gson = Gson()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -198,17 +200,18 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+
     fun saveHistory(tracks: List<Track>) {
         val sharedPreferences = getSharedPreferences(PRACTICUM_HOMEWORK, MODE_PRIVATE)
         sharedPreferences.edit()
-            .putString(TRACK_HISTORY_KEY, Gson().toJson(tracks))
+            .putString(TRACK_HISTORY_KEY, gson.toJson(tracks))
             .apply()
     }
 
     fun restoreHistory() {
         val sharedPreferences = getSharedPreferences(PRACTICUM_HOMEWORK, MODE_PRIVATE)
         val json = sharedPreferences.getString(TRACK_HISTORY_KEY, "[]")
-        val tracks = Gson().fromJson(json, Array<Track>::class.java).asList()
+        val tracks = gson.fromJson(json, Array<Track>::class.java).asList()
         historyTrackAdapter.tracks.addAll(tracks)
         historyTrackAdapter.notifyDataSetChanged()
     }
