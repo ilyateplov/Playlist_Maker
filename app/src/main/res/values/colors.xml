@@ -17,4 +17,5 @@
     <color name="textProblem">#1A1B22</color>
     <color name="textUpdate">#FFFFFF</color>
     <color name="backgroundUpdate">#1A1B22</color>
+    <color name="searchClearIcon">#AEAFB4</color>
 </resources>

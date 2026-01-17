@@ -1,10 +1,12 @@
 package com.practicum.playlistmaker.search
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,18 +24,24 @@ class TrackViewHolder(
     private val subtitle: TextView = parentView.findViewById(R.id.subtitle)
     private val time: TextView = parentView.findViewById(R.id.time)
 
-    fun bind(model: Track) {
+    private val container: LinearLayout = parentView.findViewById(R.id.container)
+
+    fun bind(model: Track, onTrackClick: (Track) -> Unit) {
         title.text = model.trackName
         subtitle.text = model.artistName
-        //time.text = model.trackTimeMillis
         time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis.toLong())
+
+        container.setOnClickListener {
+            onTrackClick(model)
+        }
 
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(convertDpToPixels(parent.context, 2f).toInt()))
             .placeholder(R.drawable.ic_placeholder_45)
             .fitCenter()
             .into(cover)
     }
 }
 
+fun convertDpToPixels(context: Context, dp: Float) = dp * context.resources.displayMetrics.density

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,14 @@ class SettingsActivity : AppCompatActivity() {
         toolBar.setNavigationOnClickListener {
             finish()
         }
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.bDarktheme)
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
+
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
 
         val bShareapp = findViewById<TextView>(R.id.bShareapp)
         bShareapp.setOnClickListener {

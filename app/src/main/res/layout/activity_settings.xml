@@ -19,12 +19,13 @@
         app:navigationIcon="@drawable/ic_back_arrow_24"
         app:navigationIconTint="@color/arrow"/>
 
-    <TextView
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/bDarktheme"
         android:text="@string/item_dark_theme"
         style="@style/SettingTextViewStyle"
-        app:drawableRightCompat="@drawable/ic_control_39_25"
-        app:drawableTint="@color/switcher"/>
+        android:layout_gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/bShareapp"
