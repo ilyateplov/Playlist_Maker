@@ -29,6 +29,11 @@
             android:name=".SearchActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".TrackActivity">
+        </activity>
+
     </application>
 
 </manifest>

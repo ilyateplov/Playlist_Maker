@@ -2,6 +2,7 @@ package com.practicum.playlistmaker
 
 import android.app.DownloadManager.Request
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -51,6 +52,12 @@ class SearchActivity : AppCompatActivity() {
         }
         saveHistory(historyTrackAdapter.tracks)
         historyTrackAdapter.notifyDataSetChanged()
+
+        val displayIntent = Intent(this@SearchActivity, TrackActivity::class.java)
+        displayIntent.putExtra(TRACK_KEY, track)
+
+        startActivity(displayIntent)
+
     }
 
 
@@ -221,6 +228,8 @@ class SearchActivity : AppCompatActivity() {
 
         const val PRACTICUM_HOMEWORK = "practicum_homework"
         const val TRACK_HISTORY_KEY = "key_for_track_history"
+
+        const val TRACK_KEY = "key_for_track"
     }
 }
 

@@ -16,4 +16,5 @@
     <color name="textUpdate">#1A1B22</color>
     <color name="backgroundUpdate">#FFFFFF</color>
     <color name="searchClearIcon">#1A1B22</color>
+    <color name="trackListParametrs">#FFFFFF</color>
 </resources>
