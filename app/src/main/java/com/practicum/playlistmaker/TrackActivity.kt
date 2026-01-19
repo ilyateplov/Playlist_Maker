@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -61,32 +62,32 @@ class TrackActivity : AppCompatActivity(){
         val trackAlbumTitle = findViewById<TextView>(R.id.track_album_title)
         trackAlbumValue.text = track.collectionName
         if (track.collectionName.isNullOrEmpty()) {
-            trackAlbumTitle.setVisibility(View.GONE)
-            trackAlbumValue.setVisibility(View.GONE)
+            trackAlbumTitle.isVisible = false
+            trackAlbumValue.isVisible = false
         }
 
         val trackYearValue = findViewById<TextView>(R.id.track_year_value)
         val trackYearTitle = findViewById<TextView>(R.id.track_year_title)
         trackYearValue.text = track.getYear()?.toString()
         if (track.releaseDate.isNullOrEmpty()) {
-            trackYearTitle.setVisibility(View.GONE)
-            trackYearValue.setVisibility(View.GONE)
+            trackYearTitle.isVisible = false
+            trackYearValue.isVisible = false
         }
 
         val trackGenreValue = findViewById<TextView>(R.id.track_genre_value)
         val trackGenreTitle = findViewById<TextView>(R.id.track_genre_title)
         trackGenreValue.text = track.primaryGenreName
         if (track.primaryGenreName.isNullOrEmpty()) {
-            trackGenreTitle.setVisibility(View.GONE)
-            trackGenreValue.setVisibility(View.GONE)
+            trackGenreTitle.isVisible = false
+            trackGenreValue.isVisible = false
         }
 
         val trackCountryValue = findViewById<TextView>(R.id.track_country_value)
         val trackCountryTitle = findViewById<TextView>(R.id.track_country_title)
         trackCountryValue.text = track.country
         if (track.country.isNullOrEmpty()) {
-            trackCountryTitle.setVisibility(View.GONE)
-            trackCountryValue.setVisibility(View.GONE)
+            trackCountryTitle.isVisible = false
+            trackCountryValue.isVisible = false
         }
 
     }
