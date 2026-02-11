@@ -8,4 +8,5 @@
     <dimen name="item_padding_vertical">21dp</dimen>
     <dimen name="name_track_size">11sp</dimen>
     <dimen name="text_nothing_problem_size">19sp</dimen>
+    <dimen name="track_cover_corner">8dp</dimen>
 </resources>
