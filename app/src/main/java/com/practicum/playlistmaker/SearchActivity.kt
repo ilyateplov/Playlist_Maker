@@ -4,6 +4,8 @@ import android.app.DownloadManager.Request
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -38,6 +40,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Query
 
+
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
 
@@ -60,6 +63,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private lateinit var inputEditText: EditText
 
     private val trackAdapter = TrackAdapter(mutableListOf(), onTrackClick)
 
@@ -88,7 +92,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val linearLayout = findViewById<LinearLayout>(R.id.container)
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
+        inputEditText = findViewById<EditText>(R.id.inputEditText)
+
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val recyclerView = findViewById<RecyclerView>(R.id.trackList)
         val update = findViewById<MaterialButton>(R.id.update)
@@ -131,6 +136,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
                 request = s?.toString()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -177,6 +183,7 @@ class SearchActivity : AppCompatActivity() {
 
     fun resultSearch(query: String) {
         if (query.isNotEmpty()) {
+
             iTunesSearchService.search(query)
                 .enqueue(object : Callback<SearchResponse> {
                     override fun onResponse(
@@ -230,6 +237,20 @@ class SearchActivity : AppCompatActivity() {
         const val TRACK_HISTORY_KEY = "key_for_track_history"
 
         const val TRACK_KEY = "key_for_track"
+
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+
+    private val searchRunnable = Runnable { resultSearch(query = inputEditText.text.toString()) }
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 }
+
+
+
 
