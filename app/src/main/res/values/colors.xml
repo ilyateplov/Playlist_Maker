@@ -19,4 +19,5 @@
     <color name="backgroundUpdate">#1A1B22</color>
     <color name="searchClearIcon">#AEAFB4</color>
     <color name="trackListParametrs">#1A1B22</color>
+    <color name="progressBar">#3772E7</color>
 </resources>

@@ -15,6 +15,7 @@ import android.widget.Adapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -174,15 +175,20 @@ class SearchActivity : AppCompatActivity() {
         val communicationProblem = findViewById<LinearLayout>(R.id.communicationProblem)
         val trackList = findViewById<RecyclerView>(R.id.trackList)
         val historyList = findViewById<LinearLayout>(R.id.searchHistory)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         trackList.isVisible = state == SearchState.LIST
         nothingFound.isVisible = state == SearchState.EMPTY
         communicationProblem.isVisible = state == SearchState.ERROR
         historyList.isVisible = state == SearchState.HISTORY && historyTrackAdapter.tracks.isNotEmpty()
+        progressBar.isVisible = state == SearchState.LOADING
         currentState = state
     }
 
     fun resultSearch(query: String) {
         if (query.isNotEmpty()) {
+
+
+            switchState(SearchState.LOADING)
 
             iTunesSearchService.search(query)
                 .enqueue(object : Callback<SearchResponse> {
@@ -190,6 +196,7 @@ class SearchActivity : AppCompatActivity() {
                         call: Call<SearchResponse>,
                         response: Response<SearchResponse>
                     ) {
+
                         if (response.code() == 200) {
                             trackAdapter.tracks.clear()
                             if (response.body()?.results?.isNotEmpty() == true) {
@@ -207,6 +214,7 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+
                         switchState(SearchState.ERROR)
                     }
 
