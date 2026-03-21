@@ -1,7 +1,11 @@
 package com.practicum.playlistmaker
 
 import android.icu.text.SimpleDateFormat
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.ContactsContract
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +25,14 @@ import com.practicum.playlistmaker.search.Track
 import java.util.Locale
 
 class TrackActivity : AppCompatActivity(){
+
+    private var mediaPlayer = MediaPlayer()
+    private lateinit var play: ImageView
+
+    private lateinit var trackTime: TextView
+
+    private val handler = Handler(Looper.getMainLooper())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,6 +51,15 @@ class TrackActivity : AppCompatActivity(){
 
         val track: Track = getIntent().getSerializableExtra(TRACK_KEY) as Track
 
+        play = findViewById<ImageView>(R.id.action_play)
+        trackTime = findViewById<TextView>(R.id.track_time)
+
+        preparePlayer(url = track.previewUrl.orEmpty())
+
+        play.setOnClickListener {
+            playbackControl()
+        }
+
         val cover = findViewById<ImageView>(R.id.cover)
         val transformations = MultiTransformation(CenterCrop(), RoundedCorners(resources.getDimension(R.dimen.track_cover_corner).toInt()))
         Glide.with(this)
@@ -53,7 +74,7 @@ class TrackActivity : AppCompatActivity(){
         val trackArtist = findViewById<TextView>(R.id.track_artist)
         trackArtist.text = track.artistName
 
-        val trackTime = findViewById<TextView>(R.id.track_time)
+
 
         val trackDurationValue = findViewById<TextView>(R.id.track_duration_value)
         trackDurationValue.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis.toLong())
@@ -91,4 +112,69 @@ class TrackActivity : AppCompatActivity(){
         }
 
     }
+
+    private fun preparePlayer(url: String) {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            play.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            play.setImageResource(R.drawable.ic_play_100)
+            playerState = STATE_PREPARED
+            mediaPlayer.seekTo(0)
+        }
+        checkTimePosition()
+
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        play.setImageResource(R.drawable.ic_pause_100)
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        play.setImageResource(R.drawable.ic_play_100)
+        playerState = STATE_PAUSED
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeMessages(0)
+        mediaPlayer.release()
+    }
+    fun checkTimePosition() {
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+        handler.postDelayed({ checkTimePosition() }, CHECK_TIME_DELAY)
+
+    }
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val CHECK_TIME_DELAY = 1000L
+    }
+
+    private var playerState = STATE_DEFAULT
 }

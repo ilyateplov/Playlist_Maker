@@ -10,7 +10,8 @@ data class Track(
     val collectionName: String?,
     val primaryGenreName: String?,
     val releaseDate: String?,
-    val country: String?
+    val country: String?,
+    var previewUrl: String?
 ) : Serializable {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
 

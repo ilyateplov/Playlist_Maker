@@ -45,6 +45,7 @@ import retrofit2.http.Query
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
 
+    private var isClickAllowed = true
 
     private val onTrackClick: (Track) -> Unit = {track: Track ->
         if (historyTrackAdapter.tracks.contains(track)) {
@@ -57,11 +58,11 @@ class SearchActivity : AppCompatActivity() {
         saveHistory(historyTrackAdapter.tracks)
         historyTrackAdapter.notifyDataSetChanged()
 
-        val displayIntent = Intent(this@SearchActivity, TrackActivity::class.java)
-        displayIntent.putExtra(TRACK_KEY, track)
-
-        startActivity(displayIntent)
-
+        if (clickDebounce()) {
+            val displayIntent = Intent(this@SearchActivity, TrackActivity::class.java)
+            displayIntent.putExtra(TRACK_KEY, track)
+            startActivity(displayIntent)
+        }
     }
 
     private lateinit var inputEditText: EditText
@@ -247,6 +248,8 @@ class SearchActivity : AppCompatActivity() {
         const val TRACK_KEY = "key_for_track"
 
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     private val searchRunnable = Runnable { resultSearch(query = inputEditText.text.toString()) }
@@ -256,6 +259,15 @@ class SearchActivity : AppCompatActivity() {
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 }
 
