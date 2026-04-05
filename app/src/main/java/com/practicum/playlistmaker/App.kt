@@ -2,10 +2,6 @@ package com.practicum.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.gson.Gson
-import com.practicum.playlistmaker.SearchActivity.Companion.PRACTICUM_HOMEWORK
-import com.practicum.playlistmaker.SearchActivity.Companion.TRACK_HISTORY_KEY
-import com.practicum.playlistmaker.search.Track
 
 class App : Application() {
 

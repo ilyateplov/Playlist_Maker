@@ -1,12 +1,10 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -20,8 +18,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.MaterialToolbar
-import com.practicum.playlistmaker.SearchActivity.Companion.TRACK_KEY
-import com.practicum.playlistmaker.search.Track
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.ui.SearchActivity
+import com.practicum.playlistmaker.domain.Track
 import java.util.Locale
 
 class TrackActivity : AppCompatActivity(){
@@ -49,7 +48,7 @@ class TrackActivity : AppCompatActivity(){
             finish()
         }
 
-        val track: Track = getIntent().getSerializableExtra(TRACK_KEY) as Track
+        val track: Track = getIntent().getSerializableExtra(SearchActivity.Companion.TRACK_KEY) as Track
 
         play = findViewById<ImageView>(R.id.action_play)
         trackTime = findViewById<TextView>(R.id.track_time)
@@ -61,7 +60,10 @@ class TrackActivity : AppCompatActivity(){
         }
 
         val cover = findViewById<ImageView>(R.id.cover)
-        val transformations = MultiTransformation(CenterCrop(), RoundedCorners(resources.getDimension(R.dimen.track_cover_corner).toInt()))
+        val transformations = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(resources.getDimension(R.dimen.track_cover_corner).toInt())
+        )
         Glide.with(this)
             .load(track.getCoverArtwork())
             .apply(RequestOptions.bitmapTransform(transformations))

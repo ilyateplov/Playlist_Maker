@@ -1,17 +1,13 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
-import android.app.DownloadManager.Request
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Adapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -20,34 +16,28 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isInvisible
-import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
-import com.practicum.playlistmaker.network.iTunesSearchService
-import com.practicum.playlistmaker.search.ITunesSearchApi
-import com.practicum.playlistmaker.search.SearchResponse
-import com.practicum.playlistmaker.search.SearchState
-import com.practicum.playlistmaker.search.Track
-import com.practicum.playlistmaker.search.TrackAdapter
+import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.domain.SearchResponse
+import com.practicum.playlistmaker.domain.Track
+import com.practicum.playlistmaker.domain.api.TrackInteractor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Query
-
 
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
 
     private var isClickAllowed = true
 
-    private val onTrackClick: (Track) -> Unit = {track: Track ->
+    val trackInteractor = Creator.provideTrackInteractor()
+    private val onTrackClick: (Track) -> Unit = { track: Track ->
         if (historyTrackAdapter.tracks.contains(track)) {
             historyTrackAdapter.tracks.remove(track)
         }
@@ -111,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             this.currentFocus?.let { view ->
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
             trackAdapter.tracks.clear()
@@ -190,36 +180,21 @@ class SearchActivity : AppCompatActivity() {
 
 
             switchState(SearchState.LOADING)
-
-            iTunesSearchService.search(query)
-                .enqueue(object : Callback<SearchResponse> {
-                    override fun onResponse(
-                        call: Call<SearchResponse>,
-                        response: Response<SearchResponse>
-                    ) {
-
-                        if (response.code() == 200) {
-                            trackAdapter.tracks.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                trackAdapter.tracks.addAll(response.body()?.results!!)
-                                trackAdapter.notifyDataSetChanged()
-                            }
-                            if (trackAdapter.tracks.isEmpty()) {
-                                switchState(SearchState.EMPTY)
-                            } else {
-                                switchState(SearchState.LIST)
-                            }
+            trackInteractor.search(expression = query, consumer = object : TrackInteractor.TrackConsumer {
+                override fun consume(foundTrack: List<Track>) {
+                    runOnUiThread {
+                        trackAdapter.tracks.clear()
+                        trackAdapter.tracks.addAll(foundTrack)
+                        trackAdapter.notifyDataSetChanged()
+                        if (trackAdapter.tracks.isEmpty()) {
+                            switchState(SearchState.EMPTY)
                         } else {
-                            switchState(SearchState.ERROR)
+                            switchState(SearchState.LIST)
                         }
                     }
 
-                    override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-
-                        switchState(SearchState.ERROR)
-                    }
-
-                })
+                }
+            })
         }
     }
 
@@ -270,7 +245,3 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 }
-
-
-
-
