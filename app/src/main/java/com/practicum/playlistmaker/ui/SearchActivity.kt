@@ -24,12 +24,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.domain.SearchResponse
 import com.practicum.playlistmaker.domain.Track
 import com.practicum.playlistmaker.domain.api.TrackInteractor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
     var request: String? = null
@@ -37,6 +33,11 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
 
     val trackInteractor = Creator.provideTrackInteractor()
+
+    private val gson: Gson = Gson()
+
+    val historyInteractor = Creator.provideSaveHistoryInteractor(this, gson)
+
     private val onTrackClick: (Track) -> Unit = { track: Track ->
         if (historyTrackAdapter.tracks.contains(track)) {
             historyTrackAdapter.tracks.remove(track)
@@ -63,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var currentState: SearchState = SearchState.HISTORY
 
-    private val gson: Gson = Gson()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -200,25 +201,19 @@ class SearchActivity : AppCompatActivity() {
 
 
     fun saveHistory(tracks: List<Track>) {
-        val sharedPreferences = getSharedPreferences(PRACTICUM_HOMEWORK, MODE_PRIVATE)
-        sharedPreferences.edit()
-            .putString(TRACK_HISTORY_KEY, gson.toJson(tracks))
-            .apply()
+        historyInteractor.saveHistory(tracks)
     }
 
     fun restoreHistory() {
-        val sharedPreferences = getSharedPreferences(PRACTICUM_HOMEWORK, MODE_PRIVATE)
-        val json = sharedPreferences.getString(TRACK_HISTORY_KEY, "[]")
-        val tracks = gson.fromJson(json, Array<Track>::class.java).asList()
-        historyTrackAdapter.tracks.addAll(tracks)
+        val restoreTracks = historyInteractor.restoreHistory()
+        historyTrackAdapter.tracks.addAll(restoreTracks)
         historyTrackAdapter.notifyDataSetChanged()
     }
     companion object {
         const val SEARCH_REQUEST = "SEARCH_REQUEST"
         const val CURRENT_STATE = "CURRENT_STATE"
 
-        const val PRACTICUM_HOMEWORK = "practicum_homework"
-        const val TRACK_HISTORY_KEY = "key_for_track_history"
+
 
         const val TRACK_KEY = "key_for_track"
 

@@ -3,8 +3,10 @@ package com.practicum.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 
-class App : Application() {
 
+
+class App : Application() {
+    val themeInteractor = Creator.provideThemeInteractor(this)
     var darkTheme = false
         private set
 
@@ -26,20 +28,13 @@ class App : Application() {
     }
 
     fun saveTheme(darkTheme: Boolean) {
-        val sharedPreferences = getSharedPreferences(APPLICATION_SETTINGS, MODE_PRIVATE)
-        sharedPreferences.edit()
-            .putBoolean(DARK_THEME_KEY, darkTheme)
-            .apply()
+        themeInteractor.saveTheme(darkTheme)
     }
 
-    fun restoreTheme() {
-        val sharedPreferences = getSharedPreferences(APPLICATION_SETTINGS, MODE_PRIVATE)
-        switchTheme(sharedPreferences.getBoolean(DARK_THEME_KEY, false))
-    }
-
-    companion object {
-        private const val APPLICATION_SETTINGS = "application_settings"
-        private const val DARK_THEME_KEY = "dark_theme_key"
+    fun restoreTheme() : Boolean {
+        val restoreTheme = themeInteractor.restoreTheme()
+        return restoreTheme
+        switchTheme(restoreTheme)
     }
 }
 
