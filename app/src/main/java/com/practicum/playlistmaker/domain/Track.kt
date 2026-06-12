@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search
+package com.practicum.playlistmaker.domain
 
 import java.io.Serializable
 
@@ -23,5 +23,3 @@ data class Track(
         }
     }
 }
-
-
