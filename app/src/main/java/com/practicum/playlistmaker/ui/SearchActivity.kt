@@ -34,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
 
     val trackInteractor = Creator.provideTrackInteractor()
 
-    private val gson: Gson = Gson()
+    private val gson: Gson = Creator.createGson()
 
     val historyInteractor = Creator.provideSaveHistoryInteractor(this, gson)
 
